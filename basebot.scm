@@ -48,34 +48,27 @@
 
 
 
-(define(root3 a b c)
-  (/
-;   (- (neg b)
-      (sqrt (discriminant a b c))))
-
-
-(define discriminant
-  (lambda (a b c)
-    (- (sq b)
-       (* 4 a c))))
-
-
-
-(define (neg x)
-  (* -1 x))
-
-;(define (time-to-impact vertical-velocity elevation)
-;  )
-
 (define time-to-impact
   (lambda (vertical-velocity elevation)
-    (root2 -9.8 vertical-velocity elevation)))
+    (root2 (/ -9.8 2) vertical-velocity elevation)))
 
 
 (define time-to-height
   (lambda (vertical-velocity elevation target-elevation)
     (time-to-impact vertical-velocity (- target-elevation elevation))))
 
+(define travel-distance-simple
+  (lambda (elevation velocity angle)
+    (* (v_x velocity angle)
+       (time-to-impact (v_y velocity angle) elevation))))
+
+(define v_x
+  (lambda (velocity angle)
+    (* velocity (cos (deg2rad angle)))))
+
+(define v_y
+  (lambda (velocity angle)
+    (* velocity (sin (deg2rad angle)))))
 
 (define meters-to-feet
   (lambda (m)
@@ -93,4 +86,10 @@
   (lambda (s)
     (/ s 3600)))
 
+(define pi
+  (* 4 (atan 1.0)))
+
+(define deg2rad
+  (lambda (deg)
+    (/ (* deg pi) 180.)))
 
